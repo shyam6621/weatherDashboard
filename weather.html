@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Weather Dashboard</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #e0f7fa;
+    }
+
+    .main-container {
+      padding: 20px;
+      text-align: center;
+    }
+
+    h1, h2 {
+      color: #006064;
+    }
+
+    .search-section {
+      margin-bottom: 20px;
+    }
+
+    input {
+      padding: 10px;
+      width: 200px;
+      border: 1px solid #00838f;
+      border-radius: 5px;
+    }
+
+    button {
+      padding: 10px 15px;
+      background-color: #00796b;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #004d40;
+    }
+
+    .weather-cards {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      padding: 15px;
+      width: 200px;
+      transition: 0.3s;
+    }
+
+    .card:hover {
+      transform: scale(1.05);
+    }
+
+    .card h3 {
+      margin: 0;
+      color: #006064;
+    }
+
+    .error {
+      margin-top: 20px;
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <div class="main-container">
+    <h1>🌦️ Weather Dashboard</h1>
+
+    <div class="search-section">
+      <input type="text" id="cityInput" placeholder="Enter city name..." />
+      <button onclick="searchCity()">Search</button>
+    </div>
+
+    <h2>🌍 Cities Overview</h2>
+    <div class="weather-cards" id="weatherContainer"></div>
+    <div id="errorBox" class="error"></div>
+  </div>
+
+  <script>
+    const weatherData = [
+      { city: "Hyderabad", icon: "🌤️", condition: "Clear Sky", temp: 25, humidity: 40 },
+      { city: "Nalgonda", icon: "☀️", condition: "Sunny", temp: 30, humidity: 35 },
+      { city: "Vijayawada", icon: "⛅", condition: "Partly Cloudy", temp: 22, humidity: 50 },
+      { city: "Warangal", icon: "🌧️", condition: "Light Rain", temp: 28, humidity: 60 },
+      { city: "Karimnagar", icon: "🌤️", condition: "Clear", temp: 27, humidity: 45 },
+      { city: "Delhi", icon: "☀️", condition: "Sunny", temp: 35, humidity: 30 }
+    ];
+
+    const container = document.getElementById("weatherContainer");
+    const errorBox = document.getElementById("errorBox");
+
+    // Display all cities initially
+    window.onload = () => {
+      weatherData.forEach(showCard);
+    };
+
+    function showCard(data) {
+      const card = document.createElement("div");
+      card.className = "card";
+      card.innerHTML = `
+        <h3>${data.city}</h3>
+        <p>${data.icon} ${data.condition}</p>
+        <p>🌡️ ${data.temp} °C</p>
+        <p>💧 Humidity: ${data.humidity}%</p>
+      `;
+      container.appendChild(card);
+    }
+
+    function searchCity() {
+      const cityInput = document.getElementById("cityInput").value.trim().toLowerCase();
+      container.innerHTML = "";
+      errorBox.innerText = "";
+
+      const result = weatherData.find(c => c.city.toLowerCase() === cityInput);
+
+      if (result) {
+        showCard(result);
+      } else {
+        errorBox.innerText = "City not found in our data!";
+      }
+    }
+  </script>
+</body>
+</html>
